@@ -1,0 +1,35 @@
+#!/bin/bash
+
+is_squash_merged() {
+  local branch_name
+  branch_name="$1"
+
+  # Find the common ancestor of the given branch and master
+  branch_merge_base=$(git merge-base master "$branch_name")
+
+  # Get the "tree object" associated with the given branch. The "tree object"
+  # is essentially a hash representing the repository's file structure and
+  # contents at a point in time
+  rev_parse=$(git rev-parse "$branch_name^{tree}")
+
+  # What would the commit sha be if we were to combine that common ancestor
+  # and the repository's file structure from that branch (the "commit tree")
+  commit_tree=$(git commit-tree "$rev_parse" -p "$branch_merge_base" -m _)
+
+  # `git cherry master` takes a list of commit shas and then outputs each one
+  # with a leading + or - depending on whether it is in master (in this case)
+  # or not. So here we're checking to see whether our commit sha we just created
+  # from the common ancestor + commit tree is already in master
+  if [[ $(git cherry master "$commit_tree") == "-"* ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+branch_list="$(git for-each-ref refs/heads/ "--format=%(refname:short)")"
+echo "$branch_list" | while read -r branch; do
+  if is_squash_merged "$branch"; then
+    echo "$branch"
+  fi
+done

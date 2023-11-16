@@ -1,0 +1,128 @@
+source ~/.dotfiles/tmux/monokai-charcoal
+
+##############################################################################
+# server options
+set-option -gs default-terminal "xterm-256color"
+# FYI: check for true color support using tmux info | ag Tc and verify using true-color-support
+#set-option -sa terminal-overrides 'xterm-256color*:Tc:Smulx=\E[4::%p1%dm:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+# Enable True Color and RGB support
+set-option -gas terminal-overrides "*:Tc"
+set-option -gas terminal-overrides "*:RGB"
+# Enable double/curly underline
+set-option -gas terminal-overrides '*:Smulx=\E[4::%p1%dm'
+# Enable colored underline. Currently not supported by allacritty, see https://github.com/alacritty/alacritty/issues/4142
+set-option -gas terminal-overrides '*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+
+# https://github.com/neovim/neovim/issues/2035#issuecomment-75380462
+set-option -g escape-time 0
+set-option -g status-position top
+
+
+##############################################################################
+# session options
+set-option -g display-time 3000
+#set-option -g default-shell /bin/zsh
+
+#set-option -g base-index 1
+#set-option -g renumber-windows on
+
+#set-option -g status-key vi
+set-option -g status-left "#S┆"
+set-option -g status-right '#{TMUX_NOTE_SESSION}#[default]#{?#{&&:#{TMUX_NOTE_SESSION},#{TMUX_NOTE_GLOBAL}},┆,}#{TMUX_NOTE_GLOBAL}#[default]┆%d %b %H:%M %Z'
+# Uncertain how setting #h based on ${host} and $(hostname) actually works…
+# commenting out to avoid unecessary use of $(hostname)
+#set-option -g status-right "#{TMUX_NOTE_SESSSION}#{TMUX_NOTE_GLOBAL}#[pop-default]┆#{?#{==:#{host},#(hostname)},,#h|}%d %b %H:%M %Z"
+#set-option -g status-right "#{?#{==:#{host},#(hostname)},,#h|}%d %b %H:%M %Z"
+#set-option -g status-right "#h│#(ansiweather -w false -p false -h false -s false | cut -d'>' -f2 | tr -d ' ')│%d %b %H:%M %Z"
+set-option -g set-titles on
+set-option -g set-titles-string "#S│#I»#W"
+set-option -g detach-on-destroy off
+
+# Emulate screen behaviour using C-a, C-a C-a, and C-a a
+set-option -g prefix ^a
+bind-key a send-prefix
+bind-key ^a last-window
+unbind-key ^b
+
+#bind-key -t vi-edit C-n history-down
+#bind-key -t vi-edit C-p history-up
+#bind-key -t vi-choice Escape cancel
+#https://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
+#bind-key -Tcopy-mode y send -X copy-pipe 'reattach-to-user-namespace pbcopy'
+
+unbind-key C-l
+bind-key C-l refresh-client
+
+bind-key '!' select-layout even-vertical
+bind-key '@' select-layout main-vertical
+bind-key '#' select-layout main-horizontal
+unbind-key '$'
+bind-key '$' select-layout tiled
+bind-key '%' select-layout even-horizontal
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+bind-key H if -F '#{==:#{window_panes},1}' '' "swap-pane -s '{left-of}'"
+bind-key J if -F '#{==:#{window_panes},1}' '' "swap-pane -s '{down-of}'"
+bind-key K if -F '#{==:#{window_panes},1}' '' "swap-pane -s '{up-of}'"
+bind-key L if -F '#{==:#{window_panes},1}' '' "swap-pane -s '{right-of}'"
+bind-key '<' select-pane -Zt :.-
+bind-key '>' select-pane -Zt :.+
+#bind-key ^3 last-pane
+
+#if-shell "tmux -V | awk '{if ($2 > 1.6) exit 0; else exit 1}'" \
+#  'bind-key R resize-pane -x 80'
+
+bind-key S set-window-option synchronize-panes
+#bind-key ^s choose-tree -GNZs
+bind-key B choose-buffer -Z
+bind-key ^s command-prompt 'new-session -A -s %%'
+bind-key ^r source ~/.tmux.conf \; display-message 'Reconfigured tmux'
+bind-key ^e new-window -n tmux.conf "$EDITOR ~/src/dotfiles/tmux/config"
+bind-key ^t if -F '#{s/bottom//:pane-border-status}' 'set-window-option pane-border-status bottom' ' set-window-option pane-border-status off'
+bind-key ^b set-option status
+bind-key ^f resize-pane -Z
+#bind-key ^p select-pane -t :.- \; resize-pane -Z
+#bind-key ^n select-pane -t :.+ \; resize-pane -Z
+bind-key ^i command-prompt "link-window -s %%%"
+bind-key ^u command-prompt "unlink-window -t %%%"
+bind-key ^w confirm-before -p "close #{?#{==:#{window_panes},1},window,pane} #S:#W#{?#{==:#{window_panes},1},,.#P}?" "kill-pane"
+bind-key '=' split-window -c "#{pane_current_path}" -v
+bind-key '"' split-window -c "#{pane_current_path}" -h
+bind-key '.' command-prompt "move-window -s '%%'"
+bind-key '*' if -F '#{==:#{window_name},jrnl}' 'switch-client -l' 'switch-client -t sys:jrnl'
+%if "#{!=:#{ALACRITTY_LOG},}"
+  bind-key ^z confirm-before -p "suspend client #{client_name}?" suspend-client
+  bind-key d confirm-before -p "detach client #{client_name}?" detach-client
+%endif
+#bind-key K command-prompt -p host: "new-window 'ssh %%'"
+#bind-key ???? setenv -u TMUX_NOTE_SESSION
+#bind-key ???? setenv -u TMUX_NOTE_GLOBAL
+
+#bind-key C-b new-window 'bash -l'
+
+set-option -g mouse on
+# Using Up event, so that the worldclock menu persists
+bind-key -T root MouseUp3StatusRight run -b ~/bin/tmux_worldclock
+bind-key -T root MouseDown1StatusRight setenv -gu TMUX_NOTE_GLOBAL\; setenv -u TMUX_NOTE_SESSION
+#bind-key -T root MouseDown1StatusLeft run -b ~/bin/tmux_switchsession
+#bind-key -T root MouseDown3StatusLeft run -b ~/bin/tmux_newsession
+
+##############################################################################
+# window options
+set-window-option -g mode-keys vi
+set-window-option -g allow-rename off
+set-window-option -g automatic-rename off
+
+#if-shell "tmux -V | awk '{if ($2 > 1.8) exit 0; else exit 1}'"
+set-window-option -g window-status-current-format "#[underscore,italics] #I#{?window_zoomed_flag,□,»}#W "
+set-window-option -g window-status-format "#I#{?window_zoomed_flag,□,#{?window_last_flag,›,⠅}}#W"
+
+#if-shell "tmux -V | awk '{if ($2 > 1.9) exit 0; else exit 1}'"
+set-window-option -g pane-border-format "#{?window_zoomed_flag,□,#{?pane_synchronized,#{?pane_active,⋙ ,⚯ },#{?pane_active,»,─}}}#P"
+set-hook -g after-split-window "set-window-option pane-border-status bottom"
+set-hook -g pane-exited 'if "[ #{window_panes} -eq 1 ]" "set-window-option pane-border-status off"'
+#set-hook -g session-closed 'switch-client -p'
+
+#  set window-option pane-border-status #{?#{==:#{window_panes},1},bottom,off}";'

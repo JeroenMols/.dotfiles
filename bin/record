@@ -1,0 +1,31 @@
+#!/bin/bash
+
+FILENAME=$1
+if [ -z "$1" ]
+then
+  FILENAME=video
+fi
+
+# start recording
+adb shell screenrecord --bit-rate 6000000 /sdcard/$FILENAME.mp4 &
+
+# Get its PID
+PID=$!
+
+# Upon a key press
+read -p "Press [Enter] to stop recording..."
+
+# Kills the recording process
+kill $PID
+
+# Wait for 3 seconds for the device to compile the video
+sleep 3
+
+# Download the video
+adb pull /sdcard/$FILENAME.mp4
+
+# Delete the video from the device
+adb shell rm /sdcard/$FILENAME.mp4
+
+# Kill background process incase kill PID fails
+trap "kill 0" SIGINT SIGTERM EXIT

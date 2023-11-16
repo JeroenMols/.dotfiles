@@ -1,0 +1,38 @@
+source ~/.dotfiles/zsh/myzsh.zsh-theme
+
+# Map key bindings for option-arrow jump over words
+bindkey "\e[1;3D" backward-word
+bindkey "\e[1;3C" forward-word
+# End map key bindings for option-arrow jump over words
+
+# Make autocomplete case insensitive
+zstyle ':completion:*' completer _complete _ignored
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+zstyle :compinstall filename '/Users/jmols/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End Make autocomplete case insensitive
+
+# Use tab/shift-tab to cycle between autocomplete suggestions
+zstyle ':completion:*' menu select
+bindkey -N menuselect
+bindkey -M menuselect '^I' menu-complete
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+zstyle ':completion:*' list-colors '=*=0' 'ma=97;2'
+# End use tab/shift-tab
+
+# Add all scripts to path
+export PATH=$PATH:~/.dotfiles/bin
+export PATH=$PATH:~/.dotfiles/bin_local
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Load configurations after zsh is setup
+source ~/.dotfiles/zsh/config.local
+source ~/.dotfiles/zsh/config.pyenv
+source ~/.dotfiles/zsh/config.nvm
+
+if [ -f ~/.dotfiles/work/.dotfiles/zsh/config ]; then
+    source ~/.dotfiles/work/.dotfiles/zsh/config
+fi

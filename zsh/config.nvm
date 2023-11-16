@@ -1,0 +1,8 @@
+# Configuration for NVM
+#
+# Ensure NVM is the last thing that gets added to the path
+# https://github.com/nvm-sh/nvm/issues/1184#issuecomment-236821175
+
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion

@@ -1,0 +1,31 @@
+export PATH="/opt/homebrew/bin/:$PATH"
+
+export ANDROID_HOME=~/Library/Android/sdk
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=$ANDROID_HOME/tools/bin:$PATH
+export PATH=$ANDROID_HOME/platform-tools:$PATH
+export PATH=$ANDROID_HOME/build-tools/23.0.2:$PATH
+export PATH=$ANDROID_HOME/emulator:$PATH  
+
+# export ANDROID_NDK=$ANDROID_HOME/ndk/21.4.7075529
+# export PATH=$ANDROID_NDK:$PATH
+
+alias dev='cd ~/dev'
+alias note='code ~/Documents/notes/'
+alias dotf='code ~/.dotfiles'
+alias ll='exa -1 --icons'
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias fp="fp = push --force-with-lease"
+alias typos-since='typos $(git diff master --name-only --relative) && git log master.. | typos -' 
+
+gch() {
+  git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
+}
+
+fzr() {
+  fzf --print0 | xargs -o -0 -I {} open -na "RubyMine.app" --args $PWD/{}  
+}
+
+fzc() {
+  fzf --print0 | xargs -o -0 -I {} code $PWD/{}  
+}
