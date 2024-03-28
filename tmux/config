@@ -126,3 +126,6 @@ set-hook -g pane-exited 'if "[ #{window_panes} -eq 1 ]" "set-window-option pane-
 #set-hook -g session-closed 'switch-client -p'
 
 #  set window-option pane-border-status #{?#{==:#{window_panes},1},bottom,off}";'
+
+# Clear previous window name on renaming 
+bind-key  , command-prompt "rename-window '%%'"

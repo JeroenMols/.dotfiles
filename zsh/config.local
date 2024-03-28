@@ -7,6 +7,9 @@ export PATH=$ANDROID_HOME/platform-tools:$PATH
 export PATH=$ANDROID_HOME/build-tools/23.0.2:$PATH
 export PATH=$ANDROID_HOME/emulator:$PATH  
 
+export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jbr/Contents/Home
+export PATH=$JAVA_HOME:$PATH
+
 # export ANDROID_NDK=$ANDROID_HOME/ndk/21.4.7075529
 # export PATH=$ANDROID_NDK:$PATH
 

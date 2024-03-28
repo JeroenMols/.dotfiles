@@ -798,7 +798,7 @@ key_bindings:
   - { key: T,        mods: Command|Alt,     chars: "\x01,"                   }
   - { key: D,        mods: Command,         chars: "\x01="                   }
   - { key: D,        mods: Command|Shift,   chars: "\x01\""                  }
-  - { key: F,        mods: Command,         chars: "\x01f"                   }
+#  - { key: F,        mods: Command,         chars: "\x01f"                   }
   - { key: F,        mods: Command|Shift,   chars: "\x01\x06"                }
   - { key: M,        mods: Command,         chars: "\x01m"                   }
   - { key: M,        mods: Command|Shift,   chars: "\x01."                   }
