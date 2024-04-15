@@ -148,12 +148,12 @@ mods = "Command"
 
 [[keyboard.bindings]]
 chars = "\u0001p"
-key = "LBracket"
+key = "{"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
 chars = "\u0001n"
-key = "RBracket"
+key = "}"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
@@ -168,7 +168,7 @@ mods = "Command|Control"
 
 [[keyboard.bindings]]
 chars = "\u0001E"
-key = "Equals"
+key = "+"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
