@@ -13,6 +13,9 @@ export PATH=$JAVA_HOME:$PATH
 # export ANDROID_NDK=$ANDROID_HOME/ndk/21.4.7075529
 # export PATH=$ANDROID_NDK:$PATH
 
+# fzf truncates search history to 1k entries by default, rather than 10k that zsh does by default
+export FZF_CTRL_R_OPTS="--history-size=10000"
+
 alias dev='cd ~/dev'
 alias note='code ~/Documents/notes/'
 alias dotf='code ~/.dotfiles'
