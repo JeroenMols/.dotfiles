@@ -19,7 +19,7 @@ export FZF_CTRL_R_OPTS="--history-size=10000"
 alias dev='cd ~/dev'
 alias note='code ~/Documents/notes/'
 alias dotf='code ~/.dotfiles'
-alias ll='exa -1 --icons'
+alias ll='ls -lah'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias fp="fp = push --force-with-lease"
 alias typos-since='typos $(git diff master --name-only --relative) && git log master.. | typos -' 
