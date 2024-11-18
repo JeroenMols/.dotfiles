@@ -1,3 +1,4 @@
+[general]
 live_config_reload = true
 
 [bell]
@@ -830,7 +831,7 @@ hide_when_typing = true
 history = 0
 multiplier = 3
 
-[shell]
+[terminal.shell]
 args = ["-u", "-l", "new-session", "-A", "-s", "sys"]
 program = "/opt/homebrew/bin/tmux"
 
