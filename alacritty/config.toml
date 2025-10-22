@@ -308,6 +308,12 @@ key = "Key8"
 mods = "Command|Shift"
 # END alacritty + tmux
 
+# Support new lines in Claude code
+[[keyboard.bindings]]
+chars = "\n"
+key = "Return"
+mods = "Shift"
+
 # [[keyboard.bindings]]
 # action = "Paste"
 # key = "Paste"
