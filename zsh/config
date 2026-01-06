@@ -31,8 +31,7 @@ export PATH=$PATH:~/.dotfiles/bin_local
 
 # Load configurations after zsh is setup
 source ~/.dotfiles/zsh/config.local
-source ~/.dotfiles/zsh/config.pyenv
-source ~/.dotfiles/zsh/config.nvm
+source ~/.dotfiles/zsh/config.mise
 
 if [ -f ~/.dotfiles/work/.dotfiles/zsh/config ]; then
     source ~/.dotfiles/work/.dotfiles/zsh/config
