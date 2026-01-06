@@ -12,6 +12,7 @@ zstyle :compinstall filename '/Users/jmols/.zshrc'
 
 autoload -Uz compinit
 compinit
+autoload -U +X bashcompinit && bashcompinit
 # End Make autocomplete case insensitive
 
 # Use tab/shift-tab to cycle between autocomplete suggestions
