@@ -1,9 +1,9 @@
 {
-  "alwaysThinkingEnabled": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754637305959
+  "permissions": {
+    "allow": [
+      "Bash(tmux set-window-option:*)"
+    ]
   },
-  "skipDangerousModePermissionPrompt": true,
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -44,14 +44,14 @@
         "hooks": [
           {
             "type": "command",
-            "description": "Prefix the tmux tab name with ? when Claude needs attention, but only if the tab doesn't already show ✓ (i.e. Stop hasn't already run). This prevents the notification from overwriting the done state at the end of a turn.",
             "command": "CURRENT=$(tmux display-message -p -t \"$TMUX_PANE\" '#W'); case \"$CURRENT\" in ✓*) ;; *) BASE=$(echo \"$CURRENT\" | sed 's/^⏳//; s/^[✓?] //'); tmux rename-window -t \"$TMUX_PANE\" \"? $BASE\" ;; esac"
           }
         ]
       }
     ]
   },
-  "permissions": {
-    "allow": ["Bash(tmux set-window-option:*)"]
+  "skipDangerousModePermissionPrompt": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754637305959
   }
 }
