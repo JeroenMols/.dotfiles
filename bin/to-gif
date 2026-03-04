@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Default values
+HEIGHT=-1
+WIDTH=-1
+OUTPUT=""
+
+# Function to display usage instructions
+usage() {
+    echo "Usage: $0 <input_file> [-h <max_height>] [-w <max_width>] [-o <output_file>]"
+    echo "  <input_file>    : Input video file (required)"
+    echo "  -h <max_height> : Maximum height for the GIF (optional, default: keep aspect ratio)"
+    echo "  -w <max_width>  : Maximum width for the GIF (optional, default: keep aspect ratio)"
+    echo "  -o <output_file>: Output file name (optional, default: input file name with .gif extension)"
+    exit 1
+}
+
+# Parse the first argument as the input file
+if [ $# -lt 1 ]; then
+    echo "Error: Input file is required."
+    usage
+fi
+
+INPUT=$1
+shift
+
+# Parse optional flags
+while getopts "h:w:o:" opt; do
+    case $opt in
+    h) HEIGHT=$OPTARG ;;
+    w) WIDTH=$OPTARG ;;
+    o) OUTPUT=$OPTARG ;;
+    *) usage ;;
+    esac
+done
+
+# Check if the input file exists
+if [ ! -f "$INPUT" ]; then
+    echo "Error: File '$INPUT' not found."
+    exit 1
+fi
+
+# Set default output file name if not specified
+if [ -z "$OUTPUT" ]; then
+    OUTPUT="${INPUT%.*}.gif"
+fi
+
+# Generate a palette for better quality
+PALETTE="palette.png"
+echo "Generating palette..."
+ffmpeg -i "$INPUT" -vf "fps=15,scale=w=$WIDTH:h=$HEIGHT:force_original_aspect_ratio=decrease,palettegen" "$PALETTE"
+
+# Create the GIF using the palette
+echo "Creating GIF..."
+ffmpeg -i "$INPUT" -i "$PALETTE" -lavfi "fps=15,scale=w=$WIDTH:h=$HEIGHT:force_original_aspect_ratio=decrease [x]; [x][1:v] paletteuse" "$OUTPUT"
+
+# Clean up the palette
+rm "$PALETTE"
+
+echo "GIF created: $OUTPUT"

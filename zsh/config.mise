@@ -1,0 +1,11 @@
+# Configuration for mise (replaces pyenv, nvm, rbenv)
+# https://mise.jdx.dev/
+
+# Load mise if installed
+if command -v mise &> /dev/null; then
+    eval "$(mise activate zsh)"
+fi
+
+# Aliases to match previous pyenv workflow
+alias venvs='mise list python'
+
