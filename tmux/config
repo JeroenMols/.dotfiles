@@ -28,7 +28,7 @@ set-option -g display-time 3000
 
 #set-option -g status-key vi
 set-option -g status-left "#S┆"
-set-option -g status-right '#{TMUX_NOTE_SESSION}#[default]#{?#{&&:#{TMUX_NOTE_SESSION},#{TMUX_NOTE_GLOBAL}},┆,}#{TMUX_NOTE_GLOBAL}#[default]┆%d %b %H:%M %Z'
+set-option -g status-right '┆#{?#{@note},#{@note},%d %b %H:%M %Z}'
 # Uncertain how setting #h based on ${host} and $(hostname) actually works…
 # commenting out to avoid unecessary use of $(hostname)
 #set-option -g status-right "#{TMUX_NOTE_SESSSION}#{TMUX_NOTE_GLOBAL}#[pop-default]┆#{?#{==:#{host},#(hostname)},,#h|}%d %b %H:%M %Z"
@@ -105,7 +105,7 @@ bind-key '*' if -F '#{==:#{window_name},jrnl}' 'switch-client -l' 'switch-client
 set-option -g mouse on
 # Using Up event, so that the worldclock menu persists
 bind-key -T root MouseUp3StatusRight run -b ~/bin/tmux_worldclock
-bind-key -T root MouseDown1StatusRight setenv -gu TMUX_NOTE_GLOBAL\; setenv -u TMUX_NOTE_SESSION
+bind-key -T root MouseDown1StatusRight set-window-option -u @note\; setenv -gu TMUX_NOTE_GLOBAL
 #bind-key -T root MouseDown1StatusLeft run -b ~/bin/tmux_switchsession
 #bind-key -T root MouseDown3StatusLeft run -b ~/bin/tmux_newsession
 
