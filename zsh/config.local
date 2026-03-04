@@ -5,7 +5,7 @@ export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/tools/bin:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 export PATH=$ANDROID_HOME/build-tools/23.0.2:$PATH
-export PATH=$ANDROID_HOME/emulator:$PATH  
+export PATH=$ANDROID_HOME/emulator:$PATH
 
 export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jbr/Contents/Home
 export PATH=$JAVA_HOME:$PATH
@@ -22,16 +22,16 @@ alias dotf='code ~/.dotfiles'
 alias ll='ls -lah'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias fp="fp = push --force-with-lease"
-alias typos-since='typos $(git diff master --name-only --relative) && git log master.. | typos -' 
+alias typos-since='typos $(git diff master --name-only --relative) && git log master.. | typos -'
 
 gch() {
   git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
 }
 
 fzr() {
-  fzf --print0 | xargs -o -0 -I {} open -na "RubyMine.app" --args $PWD/{}  
+  fzf --print0 | xargs -o -0 -I {} open -na "RubyMine.app" --args $PWD/{}
 }
 
 fzc() {
-  fzf --print0 | xargs -o -0 -I {} code $PWD/{}  
+  fzf --print0 | xargs -o -0 -I {} code $PWD/{}
 }
