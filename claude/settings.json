@@ -1,0 +1,57 @@
+{
+  "alwaysThinkingEnabled": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754637305959
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Rename the tmux tab to 'Claude [<dir>]' where <dir> is the git repo root folder name if at the root, or the relative path within the repo if in a subdirectory, or just the current folder name if not in a git repo.",
+            "command": "git_root=$(git rev-parse --show-toplevel 2>/dev/null); if [ -n \"$git_root\" ]; then prefix=$(git rev-parse --show-prefix 2>/dev/null); if [ -z \"$prefix\" ]; then dir=$(basename \"$git_root\"); else dir=${prefix%/}; fi; else dir=$(basename \"$PWD\"); fi; tmux rename-window -t \"$TMUX_PANE\" \"Claude [$dir]\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Prefix the tmux tab name with ⏳ while Claude is actively using tools, indicating work is in progress.",
+            "command": "BASE=$(tmux display-message -p -t \"$TMUX_PANE\" '#W' | sed 's/^⏳//; s/^[✓?] //'); tmux rename-window -t \"$TMUX_PANE\" \"⏳$BASE\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Prefix the tmux tab name with ✓ when Claude has finished its turn.",
+            "command": "BASE=$(tmux display-message -p -t \"$TMUX_PANE\" '#W' | sed 's/^⏳//; s/^[✓?] //'); tmux rename-window -t \"$TMUX_PANE\" \"✓ $BASE\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Prefix the tmux tab name with ? when Claude needs attention, but only if the tab doesn't already show ✓ (i.e. Stop hasn't already run). This prevents the notification from overwriting the done state at the end of a turn.",
+            "command": "CURRENT=$(tmux display-message -p -t \"$TMUX_PANE\" '#W'); case \"$CURRENT\" in ✓*) ;; *) BASE=$(echo \"$CURRENT\" | sed 's/^⏳//; s/^[✓?] //'); tmux rename-window -t \"$TMUX_PANE\" \"? $BASE\" ;; esac"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": ["Bash(tmux set-window-option:*)"]
+  }
+}
