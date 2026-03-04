@@ -5,6 +5,7 @@ live_config_reload = true
 animation = "EaseOutQuad"
 color = "#000000"
 duration = 0
+command = { program = "afplay", args = ["/System/Library/Sounds/Glass.aiff"] }
 
 # Monokai charcoal theme
 [colors.bright]
