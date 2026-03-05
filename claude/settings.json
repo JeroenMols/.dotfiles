@@ -39,6 +39,17 @@
         ]
       }
     ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Rename the tmux tab back to 'zsh' when Claude exits.",
+            "command": "tmux rename-window -t \"$TMUX_PANE\" zsh"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [
