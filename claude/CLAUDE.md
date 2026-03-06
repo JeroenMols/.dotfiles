@@ -5,6 +5,11 @@
 - Do not acknowledge I'm right
 - Do not apologize
 
+# Executing tasks
+
+- When asked a question, it's fine to stay on the master branch
+- When asked to edit a file, create a new branch first (unless you're in `.dotfiles`)
+
 # Git
 
 - Prefix branch names with jmo-
@@ -13,6 +18,7 @@
   - Two line description to explain what + why
   - Enumeration with key decisions
   - Optionally some testing notes
+- Run all `git` or `gh` directly from the current folder (do not cd to the root folder first)
 
 # Task summaries
 
