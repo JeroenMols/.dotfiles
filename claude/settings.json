@@ -1,10 +1,38 @@
 {
   "permissions": {
     "allow": [
-      "Bash(tmux set-window-option:*)"
+      "Bash(tmux set-window-option:*)",
+      "Bash(bundle exec rspec:*)",
+      "Bash(bundle exec rubocop:*)",
+      "Bash(bin/parallel-rspec:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(tail:*)",
+      "Bash(cat:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh repo view:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(git rebase:*)",
+      "Bash(git push:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(pnpm run lint)",
+      "Bash(pnpm run format:*)",
+      "mcp__plaid-mcp-default__get_buildkite_failures",
+      "mcp__plaid-mcp-default__query_plogger_logs",
+      "mcp__sentry__get_issue_details",
+      "mcp__sentry__search_issue_events",
+      "mcp__sentry__search_events",
+      "mcp__sentry__get_event_attachment",
+      "mcp__sentry__get_trace_details"
     ],
     "deny": [],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "auto"
   },
   "hooks": {
     "UserPromptSubmit": [
@@ -12,7 +40,6 @@
         "hooks": [
           {
             "type": "command",
-            "description": "Rename the tmux tab to 'Claude [<dir>]' where <dir> is the git repo root folder name if at the root, or the relative path within the repo if in a subdirectory, or just the current folder name if not in a git repo.",
             "command": "git_root=$(git rev-parse --show-toplevel 2>/dev/null); if [ -n \"$git_root\" ]; then prefix=$(git rev-parse --show-prefix 2>/dev/null); if [ -z \"$prefix\" ]; then dir=$(basename \"$git_root\"); else dir=${prefix%/}; fi; else dir=$(basename \"$PWD\"); fi; tmux rename-window -t \"$TMUX_PANE\" \"Claude [$dir]\""
           }
         ]
@@ -24,7 +51,6 @@
         "hooks": [
           {
             "type": "command",
-            "description": "Prefix the tmux tab name with ⏳ while Claude is actively using tools, indicating work is in progress.",
             "command": "BASE=$(tmux display-message -p -t \"$TMUX_PANE\" '#W' | sed 's/^⏳//; s/^[✓?] //'); tmux rename-window -t \"$TMUX_PANE\" \"⏳$BASE\""
           }
         ]
@@ -35,7 +61,6 @@
         "hooks": [
           {
             "type": "command",
-            "description": "Prefix the tmux tab name with ✓ when Claude has finished its turn.",
             "command": "BASE=$(tmux display-message -p -t \"$TMUX_PANE\" '#W' | sed 's/^⏳//; s/^[✓?] //'); tmux rename-window -t \"$TMUX_PANE\" \"✓ $BASE\""
           }
         ]
@@ -46,7 +71,6 @@
         "hooks": [
           {
             "type": "command",
-            "description": "Rename the tmux tab back to 'zsh' when Claude exits.",
             "command": "tmux rename-window -t \"$TMUX_PANE\" zsh"
           }
         ]
@@ -63,7 +87,32 @@
       }
     ]
   },
+  "enabledPlugins": {
+    "plaid-deployment-monitor@plaid-plugins": true,
+    "example-skills@anthropic-agent-skills": true,
+    "plaid-idv-toolkit@plaid-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "plaid-plugins": {
+      "source": {
+        "source": "git",
+        "url": "git@github.plaid.com:plaid/agent-tools.git"
+      }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    }
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  },
   "skipDangerousModePermissionPrompt": true,
+  "preferredNotifChannel": "terminal_bell",
+  "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754637305959
   }
